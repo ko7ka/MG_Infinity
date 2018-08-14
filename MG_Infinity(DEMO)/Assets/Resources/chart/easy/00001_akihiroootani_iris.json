@@ -1,0 +1,8 @@
+{
+    "difficulty": [0, 1],
+    "time": [[3.0, 5.0]],
+    "route": "0123",
+    "bpm": 60,
+    "setbpm": [0.0, 0],
+    "offset": 0
+}
