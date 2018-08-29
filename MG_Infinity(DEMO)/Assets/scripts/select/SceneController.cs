@@ -4,40 +4,35 @@ using UnityEngine;
 
 public class SceneController : MonoBehaviour {
 
-	//[Serializable]// <-JSONへの変換に必要
-	public class listSongsInformation{
-		public int id;
-		public string composer;
-		public string title; 
-		public int play_count; 
-		public int[] difficulty; 
-	}
 
-	//[Serializable]
+    [System.Serializable]
 	public class songsInformation {
 		public float hit_decision;
 		public float speed;
-		public listSongsInformation[] listSI;
+        public listSongsInformation[] list;
 	}
-	
 
+    [System.Serializable]// <-JSONへの変換に必要
+    public class listSongsInformation
+    {
+        public int id;
+        public string composer;
+        public string title;
+        public int play_count;
+        public int[] difficulty;
+    }
 
 	// Use this for initialization
 	void Start () {
-		songsInformation si = new songsInformation();
+        songsInformation si = new songsInformation();
 
-		string json = Resources.Load("all_preference.json").ToString();
+		string json = Resources.Load("all_preference").ToString();
 
-		Debug.Log(json);
-		//string json = prefDataFileDescriptor.ToString();
+		JsonUtility.FromJsonOverwrite(json, si);
 
-		//Debug.Log(json);
-
-		//JsonUtility.FromJsonOverwrite(json, si);
-
-		//Debug.Log(si.hit_decision);
-		//Debug.Log(si.speed);
-		//Debug.Log(si.listSI[0].composer);
+		Debug.Log(si.hit_decision);
+		Debug.Log(si.speed);
+        Debug.Log(si.list[0].composer);
 
 	}
 	
