@@ -1,16 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour {
 	//他シーンに渡す変数
 	public static int musicID;
-	public static int difficalty;
-	public static string artist;
+	public static int difficulty;
+	public static string composer;
 	public static string title;
 	//このシーン内で使う変数
 	static int sceneDif; //scene内の難易度を扱う変数　easy:0,medium:1,hard:2,infinity:3
 	static int sortMode; //sortした時のモード選択　sortのモードいくつあったっけ？（それぞれ割り当てるのじゃ）
+	songsInformation si = new songsInformation();
 
 	[System.Serializable]
 	public class songsInformation {
@@ -34,10 +36,10 @@ public class SceneController : MonoBehaviour {
 		return musicID;
 	}
 	public static int getDifficalty(){
-		return difficalty;
+		return difficulty;
 	}
-	public static string getArtist(){
-		return artist;
+	public static string getComposer(){
+		return composer;
 	}
 	public static string getTitle(){
 		return title;
@@ -45,15 +47,24 @@ public class SceneController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		songsInformation si = new songsInformation();
 
 		string json = Resources.Load("all_preference").ToString();
 
 		JsonUtility.FromJsonOverwrite(json, si);
 
-		Debug.Log(si.hit_decision);
-		Debug.Log(si.speed);
-		Debug.Log(si.list[0].composer);
+		// Debug.Log(si.hit_decision);
+		// Debug.Log(si.speed);
+		// Debug.Log(si.list[0].artist);
+
+		/* insert values in each variable to allow other variables to refer to them */
+		/* スタート段階でselectedMusic, sceneDifの値は決まらないからこれはテストとして使う */
+		int selectedMusic = 0;
+		sceneDif = 0;
+		musicID = si.list[selectedMusic].id;
+		difficulty = sceneDif;
+		composer = si.list[selectedMusic].composer;
+		title = si.list[selectedMusic].title;
+
 
 		//他に必要な処理
 		/*
@@ -74,7 +85,11 @@ public class SceneController : MonoBehaviour {
 	
 	//returnボタン
 	void OnClickReturn(){
-		SceneManager.LoadScene("Start",LoadSceneMode.Single);
+		SceneManager.LoadScene("start",LoadSceneMode.Single);
+	}
+
+	public void OnClickPlay(){
+		SceneManager.LoadScene("play", LoadSceneMode.Single);
 	}
 
 	//easyボタン
