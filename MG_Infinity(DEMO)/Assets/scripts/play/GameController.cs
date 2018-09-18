@@ -43,6 +43,8 @@ public class GameController : MonoBehaviour {
 		// init chart
 		initChart();
 
+		// set 
+
 		pauseScene.SetActive(false);
 		pauseButton.SetActive(false);
 		timerController.SetActive(false);
