@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
+	private int scoreValue;
 	private float time = 0f; //used to measure the time.
 	private int id, difficulty; //used to load specified musical score.
 	private string composer, title; //used to load specified musical score.
@@ -18,6 +20,7 @@ public class GameController : MonoBehaviour {
 	public GameObject startScene;
 	// public GameObject audioObject;
 	public AudioSource audioSource;
+	public Text scoreLabel;
 
 
 
@@ -48,6 +51,9 @@ public class GameController : MonoBehaviour {
 		// init audioSource
 		initAudioSource();
 
+		// init scoreLabel
+		initScoreLabel();
+
 		pauseScene.SetActive(false);
 		pauseButton.SetActive(false);
 		timerController.SetActive(false);
@@ -77,6 +83,7 @@ public class GameController : MonoBehaviour {
 				afterTouchToStart();
 				break;
 			case Phase.playing:
+				playing();
 				break;
 			case Phase.pausing:
 				break;
@@ -100,6 +107,7 @@ public class GameController : MonoBehaviour {
 
 		if (time > chart.offset) {
 			time = 0;
+			pauseButton.SetActive(true);
 			phase = Phase.playing;
 			audioSource.Play();
 		}
@@ -166,5 +174,14 @@ public class GameController : MonoBehaviour {
 		//audioSource = audioObject.GetComponent<AudioSource>();
 		string path = "music/" + id.ToString("D5") + "_" + composer + "_" + title;
 		audioSource.clip = Resources.Load<AudioClip>(path);
+	}
+
+	void initScoreLabel() {
+		scoreValue = 0;
+		scoreLabel.text = scoreValue.ToString("D6");
+	}
+
+	void playing() {
+
 	}
 }
