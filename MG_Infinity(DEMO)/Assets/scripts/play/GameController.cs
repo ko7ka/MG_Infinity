@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
-	private float time = 0; //used to measure the time.
+	private float time = 0f; //used to measure the time.
 	private int id, difficulty; //used to load specified musical score.
 	private string composer, title; //used to load specified musical score.
 	private Phase phase; //used to express the progress status.
@@ -16,6 +16,8 @@ public class GameController : MonoBehaviour {
 	public GameObject timerController;
 	public GameObject timer;
 	public GameObject startScene;
+	// public GameObject audioObject;
+	public AudioSource audioSource;
 
 
 
@@ -43,7 +45,8 @@ public class GameController : MonoBehaviour {
 		// init chart
 		initChart();
 
-		// set 
+		// init audioSource
+		initAudioSource();
 
 		pauseScene.SetActive(false);
 		pauseButton.SetActive(false);
@@ -90,9 +93,15 @@ public class GameController : MonoBehaviour {
 	}
 
 	void afterTouchToStart() {
+
 		if (timerController.activeInHierarchy == false) {
-			pauseButton.SetActive(true);
+			time += Time.deltaTime;
+		}
+
+		if (time > chart.offset) {
+			time = 0;
 			phase = Phase.playing;
+			audioSource.Play();
 		}
 	}
 
@@ -113,11 +122,19 @@ public class GameController : MonoBehaviour {
 	}
 
 	void initChart() {
-		difficulty = SceneController.getDifficalty();
-		id = SceneController.getID();
-		composer = SceneController.getComposer();
-		title = SceneController.getTitle();
+		if (Application.isEditor) {
+			difficulty = 0;
+			id = 1;
+			composer = "2bnsn";
+			title = "ugokuugoku";
+		} else {
 
+			difficulty = SceneController.getDifficalty();
+			id = SceneController.getID();
+			composer = SceneController.getComposer();
+			title = SceneController.getTitle();
+
+		}
 		string difficultyFolder = "";
 
 		switch (difficulty) {
@@ -142,5 +159,12 @@ public class GameController : MonoBehaviour {
 		Debug.Log(json);
 		Debug.Log(chart.difficulty);
 		Debug.Log(chart.offset);
+		
+	}
+
+	void initAudioSource() {
+		//audioSource = audioObject.GetComponent<AudioSource>();
+		string path = "music/" + id.ToString("D5") + "_" + composer + "_" + title;
+		audioSource.clip = Resources.Load<AudioClip>(path);
 	}
 }
