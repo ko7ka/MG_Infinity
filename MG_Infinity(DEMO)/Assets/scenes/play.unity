@@ -1217,6 +1217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ee500d048b6b44390b695c9aa99822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radius: 5
   pauseScene: {fileID: 2145218265}
   pauseButton: {fileID: 2069392300}
   touchToStart: {fileID: 2103198458}

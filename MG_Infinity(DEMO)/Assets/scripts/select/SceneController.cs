@@ -11,7 +11,10 @@ public class SceneController : MonoBehaviour {
 	public static string title;
 	//このシーン内で使う変数
 	static int sceneDif; //scene内の難易度を扱う変数　easy:0,medium:1,hard:2,infinity:3
-	static int sortMode; //sortした時のモード選択　sortのモードいくつあったっけ？（それぞれ割り当てるのじゃ）
+	static int sortMode;
+	
+	static float speed, hit_decision;
+	 //sortした時のモード選択　sortのモードいくつあったっけ？（それぞれ割り当てるのじゃ）
 	songsInformation si = new songsInformation();
 
 	[System.Serializable]
@@ -35,7 +38,7 @@ public class SceneController : MonoBehaviour {
 	public static int getID(){
 		return musicID;
 	}
-	public static int getDifficalty(){
+	public static int getDifficulty(){
 		return difficulty;
 	}
 	public static string getComposer(){
@@ -45,6 +48,13 @@ public class SceneController : MonoBehaviour {
 		return title;
 	}
 
+	public static float getSpeed() {
+		return speed;
+	}
+
+	public static float getDecision() {
+		return hit_decision;
+	}
 	// Use this for initialization
 	void Start () {
 
@@ -64,6 +74,8 @@ public class SceneController : MonoBehaviour {
 		difficulty = sceneDif;
 		composer = si.list[selectedMusic].composer;
 		title = si.list[selectedMusic].title;
+		speed = si.speed;
+		hit_decision = si.hit_decision;
 
 
 		//他に必要な処理
