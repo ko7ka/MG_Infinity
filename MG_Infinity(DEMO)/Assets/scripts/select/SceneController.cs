@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -67,17 +68,59 @@ public class SceneController : MonoBehaviour {
 		SceneManager.LoadScene("start",LoadSceneMode.Single);
 	}
 
+	//playボタン
 	public void movePlay(){
 		SceneManager.LoadScene("play", LoadSceneMode.Single);
 	}
 
+	//一つ上の曲
 	public void upMusic(){
 		path = path - 1;
 	}
 
+	//一つ下の曲
 	public void downMusic(){
 		path = path + 1;
 	}
+
+	//easyボタン
+	public void chengeToEasy(){
+		sceneDif = 0;
+	}
+	//mediumボタン
+	public void chengeToMedium(){
+		sceneDif = 1;
+	}
+	//hardボタン
+	public void chengeToHard(){
+		sceneDif = 2;
+	}
+	//infinityボタン
+	public void changeToInfinity(){
+		sceneDif = 3;
+	}
+	//sortボタン
+	public void musicNameSort(){
+		string[] name = new string[si.list.Length];
+		listPath = new int[si.list.Length];
+		for(int i = 0; i < si.list.Length; i++){
+			name[i] = si.list[i].title;
+		}
+		Array.Sort(name);
+		for(int i = 0; i < si.list.Length; i++){
+			listPath[i] = Array.IndexOf(si.list,name[i]);
+		}
+		sortMode = 1;
+		//nameに順番にtitle入れてソート
+		//nameの文字列をsi.listで検索して、index順番にlistPathにぶち込む（これでlistPathを参照すれば元のindexがわかる...はず）
+		//ちなみに、同じ名前があったら死ぬ。
+
+		//必要な処理
+		/*
+		sortする。以上
+		*/
+	}
+
 	// Use this for initialization
 	void Start () {
 
@@ -113,28 +156,15 @@ public class SceneController : MonoBehaviour {
 				break;//ここバグでる可能性ある。
 		}
 		selectMusic(musicSID, sceneDif);
+
+		//Debug.Log(string.Format("title:{0}",title));
+		//title:ugokuugoku
 		//必要な処理
 		/*
 		マカロン食べること。
 		*/
 	}
 	
-	//easyボタン
-	public void chengeToEasy(){
-		sceneDif = 0;
-	}
-	//mediumボタン
-	public void chengeToMedium(){
-		sceneDif = 1;
-	}
-	//hardボタン
-	public void chengeToHard(){
-		sceneDif = 2;
-	}
-	//infinityボタン
-	public void changeToInfinity(){
-		sceneDif = 3;
-	}
 
 	public void selectMusic(int n, int dif){
 		//00001
@@ -144,22 +174,5 @@ public class SceneController : MonoBehaviour {
 		title = si.list[n].title;
 		speed = si.speed;
 		hit_decision = si.hit_decision;
-	}
-
-	//sortボタン
-	public void musicNameSort(){
-		string[] name = new string[si.list.Length];
-		listPath = new int[si.list.Length];
-		for(int i = 0; i < si.list.Length; i++){
-			name[i] = si.list[i].title;
-		}//書きかけ
-		//nameに順番にtitle入れてソート
-		//nameの文字列をsi.listで検索して、index順番にlistPathにぶち込む（これでlistPathを参照すれば元のindexがわかる...はず）
-
-		//必要な処理
-		/*
-		sortする。以上
-		(どうやってソートしようか)
-		*/
 	}
 }
