@@ -25,6 +25,9 @@ public class GameController : MonoBehaviour {
 	// public GameObject audioObject;
 	public AudioSource audioSource;
 	public Text scoreLabel;
+	private int[,] routeRadian;
+	private var routeDict;
+	
 
 
 
@@ -57,6 +60,9 @@ public class GameController : MonoBehaviour {
 
 		// init scoreLabel
 		initScoreLabel();
+		
+		// convert chart into Kakudo
+		chartToRadian();
 
 		pauseScene.SetActive(false);
 		pauseButton.SetActive(false);
@@ -231,6 +237,15 @@ public class GameController : MonoBehaviour {
 	void initScoreLabel() {
 		scoreValue = 0;
 		scoreLabel.text = scoreValue.ToString("D6");
+	}
+	
+	void chartToRadian(){
+		// 	Who am I? - Human No 0-F wo CockDo 2 HengKang through
+		// 3: 0,1，2  どっちの円から出るか、してん、しゅうてんのかくど
+		// chart.route
+		routeDict = new Dictionary<string,int[]>();
+		routeRadian = new int[chart.route.Length,3];
+		
 	}
 	
 }
