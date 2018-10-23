@@ -4,11 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using LitJson;
+using System;
 
 public class GameController : MonoBehaviour {
 
 	private int scoreValue;
-	private float time = 0f; //used to measure the time.
+	private double time = 0f; //used to measure the time.
 	private int id, difficulty; //used to load specified musical score.
 	private string composer, title; //used to load specified musical score.
 	private float speed, hit_decision;
@@ -25,8 +26,8 @@ public class GameController : MonoBehaviour {
 	// public GameObject audioObject;
 	public AudioSource audioSource;
 	public Text scoreLabel;
-	private int[,] routeRadian;
-	private var routeDict;
+	//private int[,] routeRadian;
+	private Dictionary<string, int[]> routeDict;
 	
 
 
@@ -61,8 +62,8 @@ public class GameController : MonoBehaviour {
 		// init scoreLabel
 		initScoreLabel();
 		
-		// convert chart into Kakudo
-		chartToRadian();
+		// initialize routeDict
+		initRouteDict();
 
 		pauseScene.SetActive(false);
 		pauseButton.SetActive(false);
@@ -126,7 +127,6 @@ public class GameController : MonoBehaviour {
 
 	void playing() {
 		
-		float instantiatingTime = time - (radius / speed);
 		//Debug.Log("notes speed is:" + speed);
 		//Debug.Log("number of notes:" + chart.notesTime.Length);
 		
@@ -138,8 +138,8 @@ public class GameController : MonoBehaviour {
 		}
 
 		for (int i = 0; i < scanningRange; i++) {
-			if (chart.notesTime[numberOfInstantiatedNotes + i][0] >= instantiatingTime && chart.notesTime[numberOfInstantiatedNotes + i][1] + Time.deltaTime > instantiatingTime) {
-				// instantiating a note
+			if (chart.notesTime[numberOfInstantiatedNotes][0] - (radius / speed) < time) {
+				instantiateNote(numberOfInstantiatedNotes);
 				numberOfInstantiatedNotes++;
 			}
 		}
@@ -239,13 +239,53 @@ public class GameController : MonoBehaviour {
 		scoreLabel.text = scoreValue.ToString("D6");
 	}
 	
-	void chartToRadian(){
+	void initRouteDict(){
 		// 	Who am I? - Human No 0-F wo CockDo 2 HengKang through
 		// 3: 0,1，2  どっちの円から出るか、してん、しゅうてんのかくど
 		// chart.route
-		routeDict = new Dictionary<string,int[]>();
-		routeRadian = new int[chart.route.Length,3];
-		
+		routeDict = new Dictionary<string, int[]>();
+		//routeRadian = new int[chart.route.Length,];
+
+		routeDict.Add("01", new int[3] {1, 180, 135});
+		routeDict.Add("12", new int[3] {1, 135, 90});
+		routeDict.Add("23", new int[3] {1, 90, 45});
+		routeDict.Add("34", new int[3] {1, 45, 0});
+		routeDict.Add("45", new int[3] {1, 360, 315});
+		routeDict.Add("56", new int[3] {1, 315, 270});
+		routeDict.Add("67", new int[3] {1, 270, 225});
+		routeDict.Add("70", new int[3] {1, 225, 180});
+		routeDict.Add("F8", new int[3] {0, 0, 45});
+		routeDict.Add("89", new int[3] {0, 45, 90});
+		routeDict.Add("9A", new int[3] {0, 90, 135});
+		routeDict.Add("AB", new int[3] {0, 135, 180});
+		routeDict.Add("BC", new int[3] {0, 180, 225});
+		routeDict.Add("CD", new int[3] {0, 225, 270});
+		routeDict.Add("DE", new int[3] {0, 270, 315});
+		routeDict.Add("EF", new int[3] {0, 315, 360});
+		routeDict.Add("FE", new int[3] {0, 360, 315});
+		routeDict.Add("ED", new int[3] {0, 315, 270});
+		routeDict.Add("DC", new int[3] {0, 270, 225});
+		routeDict.Add("CB", new int[3] {0, 225, 180});
+		routeDict.Add("BA", new int[3] {0, 180, 135});
+		routeDict.Add("A9", new int[3] {0, 135, 90});
+		routeDict.Add("98", new int[3] {0, 90, 45});
+		routeDict.Add("8F", new int[3] {0, 45, 0});
+		routeDict.Add("07", new int[3] {1, 180, 225});
+		routeDict.Add("76", new int[3] {1, 225, 270});
+		routeDict.Add("65", new int[3] {1, 270, 315});
+		routeDict.Add("54", new int[3] {1, 315, 360});
+		routeDict.Add("43", new int[3] {1, 0, 45});
+		routeDict.Add("32", new int[3] {1, 45, 90});
+		routeDict.Add("21", new int[3] {1, 90, 135});
+		routeDict.Add("10", new int[3] {1, 135, 180});
+
 	}
+
+	void instantiateNote(int id) {
+		double startTime = chart.notesTime[id][0];
+		double endTime = chart.notesTime[id][1];
+		double dividedTime = 0;
+		string route = chart.route[id];
+	} 
 	
 }
